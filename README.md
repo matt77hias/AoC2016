@@ -1,2 +1,4 @@
-# AoC2016
-Advent of Code 2016
+# [AoC2016](http://adventofcode.com/2016)
+
+## About
+Solutions for [Advent of Code 2016](http://adventofcode.com/2016)
