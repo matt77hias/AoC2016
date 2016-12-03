@@ -45,12 +45,8 @@ def calc_blocks(data):
             current_position[axis] += steps
         else:
             current_position[axis] -= steps
-        
-    distance = manhattan_distance(current_position)
-    print('Position: ' + str(current_position[::-1]))
-    print('Distance: ' + str(distance))
-        
-    return distance
+    
+    return manhattan_distance(current_position), current_position[::-1]
             
 def manhattan_distance(p1, p2=[0,0]):
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
@@ -59,7 +55,9 @@ def manhattan_distance(p1, p2=[0,0]):
 ## Tests
 ###################################################################################################################################################################################
 if __name__ == "__main__":
-    calc_blocks_from_file(fname=get_fname('input.txt'))
+    distance, position = calc_blocks_from_file(fname=get_fname('input.txt'))
+    print('Position: ' + str(position))
+    print('Distance: ' + str(distance))
     
 def test_suite():
     test(5, 'R2, L3')
@@ -70,4 +68,4 @@ def test_suite():
     test(0, 'R5, R0, R5, R0')
     
 def test(exact, data):
-    print('Solution: ' + str(exact) + '\tCalculated solution: '+ str(calc_blocks(data=data)))
+    print('Solution: ' + str(exact) + '\tCalculated solution: '+ str(calc_blocks(data=data)[0]))

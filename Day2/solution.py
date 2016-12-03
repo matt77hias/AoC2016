@@ -9,11 +9,15 @@ def get_fname(name, path=__location__):
     return os.path.join(path, name)
     
 def calc_keys(fname):
+    keycode = 0
     current_position = [0,0]
     with open(fname, 'r') as fstream:
         for line in fstream:
             key, current_position = calc_key(data=line, current_position=current_position)
-            
+            keycode *= 10
+            keycode += key
+    return keycode
+                    
 def calc_key(data, current_position=[0,0]):
     keypad = ((7,8,9),(4,5,6),(1,2,3))
     for movement in data:
@@ -30,9 +34,6 @@ def calc_key(data, current_position=[0,0]):
         current_position[1] = clamp(current_position[1], -1, 1)
     
     key = keypad[1 + current_position[1]][1 + current_position[0]]
-    print('Position: ' + str(current_position))
-    print('Key: ' + str(key))
-    
     return key, current_position
         
 def clamp(x, low, high):
@@ -42,11 +43,20 @@ def clamp(x, low, high):
 ## Tests
 ###################################################################################################################################################################################
 if __name__ == "__main__":
-    calc_keys(fname=get_fname('input.txt'))
+    keycode = calc_keys(fname=get_fname('input.txt'))
+    print('Keycode: ' + str(keycode))
       
 def test_suite():
     current_position = [0,0]
     key, current_position = calc_key('ULL',   current_position=current_position)
+    print('Position: ' + str(current_position))
+    print('Key: ' + str(key))
     key, current_position = calc_key('RRDDD', current_position=current_position)
+    print('Position: ' + str(current_position))
+    print('Key: ' + str(key))
     key, current_position = calc_key('LURDL', current_position=current_position)
+    print('Position: ' + str(current_position))
+    print('Key: ' + str(key))
     key, current_position = calc_key('UUUUD', current_position=current_position)
+    print('Position: ' + str(current_position))
+    print('Key: ' + str(key))
