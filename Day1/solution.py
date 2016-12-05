@@ -1,6 +1,7 @@
 ###################################################################################################################################################################################
 ## Solution
 ################################################################################################################################################################################### 
+from copy import copy
 import os
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -38,6 +39,7 @@ def calc_blocks_from_file(fname):
 def calc_blocks(data):
     current_orientation = 0
     current_position = [0,0] # y, x
+    
     for (turn, steps) in extract_movements(data=data):
         current_orientation = (current_orientation + turn) % 4
         axis = current_orientation % 2
@@ -47,18 +49,34 @@ def calc_blocks(data):
             current_position[axis] -= steps
     
     return manhattan_distance(current_position), current_position[::-1]
+   
+def calc_blocks_from_file2(fname):
+    return calc_blocks2(data=extract_data_from_file(fname=fname))
+   
+def calc_blocks2(data):
+    current_orientation = 0
+    current_position = [0,0] # y, x
+    
+    visited_positions = []
+    
+    for (turn, steps) in extract_movements(data=data):
+        current_orientation = (current_orientation + turn) % 4
+        axis = current_orientation % 2
+        incr = 1 if (current_orientation < 2) else -1
+        for i in range(steps):
+            current_position[axis] += incr
+            if current_position in visited_positions:
+                return manhattan_distance(current_position), current_position[::-1]
+            visited_positions.append(copy(current_position))
             
+    raise 1 
+                              
 def manhattan_distance(p1, p2=[0,0]):
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
     
 ###################################################################################################################################################################################
 ## Tests
 ###################################################################################################################################################################################
-if __name__ == "__main__":
-    distance, position = calc_blocks_from_file(fname=get_fname('input.txt'))
-    print('Position: ' + str(position))
-    print('Distance: ' + str(distance))
-    
 def test_suite():
     test(5, 'R2, L3')
     test(5, 'L2, R3')
@@ -69,3 +87,14 @@ def test_suite():
     
 def test(exact, data):
     print('Solution: ' + str(exact) + '\tCalculated solution: '+ str(calc_blocks(data=data)[0]))
+
+if __name__ == "__main__":
+    data = extract_data_from_file(fname=get_fname('input.txt'))
+    
+    distance, position = calc_blocks(data=data)
+    print('Position: ' + str(position))
+    print('Distance: ' + str(distance))
+    
+    distance, position = calc_blocks2(data=data)
+    print('Position: ' + str(position))
+    print('Distance: ' + str(distance))

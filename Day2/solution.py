@@ -68,9 +68,11 @@ def test_suite():
     print('Key: ' + str(key))
 
 if __name__ == "__main__":
+    fname = get_fname('input.txt')
+    
     current_position = [1,1]
     keypad = (('7','8','9'),('4','5','6'),('1','2','3'))
-    keycode = calc_keys(fname=get_fname('input.txt'), keypad=keypad, current_position=current_position)
+    keycode = calc_keys(fname=fname, keypad=keypad, current_position=current_position)
     print('Keycode: ' + str(keycode))
 
     current_position = [2,0]
@@ -79,5 +81,5 @@ if __name__ == "__main__":
               ('5', '6', '7', '8', '9'),
               ('_', '2', '3', '4', '_'),
               ('_', '_', '1', '_', '_'))
-    keycode = calc_keys(fname=get_fname('input.txt'), keypad=keypad, current_position=current_position)
+    keycode = calc_keys(fname=fname, keypad=keypad, current_position=current_position)
     print('Keycode: ' + str(keycode))
